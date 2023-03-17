@@ -635,8 +635,9 @@ new_fluid_synth(fluid_settings_t *settings)
     double sample_rate_min, sample_rate_max;
 
     /* initialize all the conversion tables and other stuff */
-    if(fluid_atomic_int_compare_and_exchange(&fluid_synth_initialized, 0, 1))
+    if(fluid_synth_initialized == 0)
     {
+        fluid_synth_initialized = 1;
         fluid_synth_init();
     }
 
@@ -812,7 +813,7 @@ new_fluid_synth(fluid_settings_t *settings)
 
     fluid_atomic_int_set(&synth->ticks_since_start, 0);
     synth->tuning = NULL;
-    fluid_private_init(synth->tuning_iter);
+    synth->tuning_iter = 0;
 
     /* Initialize multi-core variables if multiple cores enabled */
     if(synth->cores > 1)
@@ -1198,7 +1199,7 @@ delete_fluid_synth(fluid_synth_t *synth)
         FLUID_FREE(synth->tuning);
     }
 
-    fluid_private_free(synth->tuning_iter);
+    synth->tuning_iter = 0;
 
 #ifdef LADSPA
     /* Release the LADSPA effects unit */
@@ -7419,7 +7420,7 @@ fluid_synth_tuning_iteration_start(fluid_synth_t *synth)
 {
     fluid_return_if_fail(synth != NULL);
     fluid_synth_api_enter(synth);
-    fluid_private_set(synth->tuning_iter, FLUID_INT_TO_POINTER(0));
+    synth->tuning_iter = 0;
     fluid_synth_api_exit(synth);
 }
 
@@ -7442,7 +7443,7 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
     fluid_synth_api_enter(synth);
 
     /* Current tuning iteration stored as: bank << 8 | program */
-    pval = fluid_private_get(synth->tuning_iter);
+    pval = &synth->tuning_iter;
     p = FLUID_POINTER_TO_INT(pval);
     b = (p >> 8) & 0xFF;
     p &= 0xFF;
@@ -7471,12 +7472,11 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
 
             if(p < 127)
             {
-                fluid_private_set(synth->tuning_iter,
-                                  FLUID_INT_TO_POINTER(b << 8 | (p + 1)));
+                synth->tuning_iter = (b << 8 | (p + 1));
             }
             else
             {
-                fluid_private_set(synth->tuning_iter, FLUID_INT_TO_POINTER((b + 1) << 8));
+                synth->tuning_iter = ((b + 1) << 8);
             }
 
             FLUID_API_RETURN(1);

@@ -520,8 +520,8 @@ if ( CMAKE_VERSION VERSION_GREATER_EQUAL 3.15 AND VCPKG_TOOLCHAIN )
 endif ()
 
 # Mandatory libraries: glib and gthread
-find_package ( GLib2 ${GLIB2_MINUMUM_VERSION} REQUIRED )
-list( APPEND PC_REQUIRES_PRIV "glib-2.0" "gthread-2.0")
+# find_package ( GLib2 ${GLIB2_MINUMUM_VERSION} REQUIRED )
+# list( APPEND PC_REQUIRES_PRIV "glib-2.0" "gthread-2.0")
 
 if ( GLib2_VERSION AND GLib2_VERSION VERSION_LESS "2.26.0" )
     message ( WARNING "Your version of glib is very old. This may cause problems with fluidsynth's sample cache on Windows. Consider updating to glib 2.26 or newer!" )

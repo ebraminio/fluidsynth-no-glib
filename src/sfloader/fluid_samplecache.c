@@ -282,6 +282,7 @@ static fluid_samplecache_entry_t *get_samplecache_entry(SFData *sf,
 
 static int fluid_get_file_modification_time(char *filename, time_t *modification_time)
 {
+#if 0
     fluid_stat_buf_t buf;
 
     if(fluid_stat(filename, &buf))
@@ -290,6 +291,7 @@ static int fluid_get_file_modification_time(char *filename, time_t *modification
     }
 
     *modification_time = buf.st_mtime;
+#endif
     return FLUID_OK;
 }
 

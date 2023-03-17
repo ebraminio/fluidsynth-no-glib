@@ -33,7 +33,7 @@
 #if HAVE_PTHREAD_H && !defined(_WIN32)
 // Do not include pthread on windows. It includes winsock.h, which collides with ws2tcpip.h from fluid_sys.h
 // It isn't need on Windows anyway.
-#include <pthread.h>
+//#include <pthread.h>
 #endif
 
 /* WIN32 HACK - Flag used to differentiate between a file descriptor and a socket.
@@ -411,6 +411,8 @@ unsigned int fluid_curtime(void)
 double
 fluid_utime(void)
 {
+    return 0.0;
+#if 0
     double utime;
 
 #if GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION >= 28
@@ -445,6 +447,7 @@ fluid_utime(void)
 #endif
 
     return utime;
+#endif
 }
 
 
@@ -477,6 +480,7 @@ fluid_thread_self_set_prio(int prio_level)
 void
 fluid_thread_self_set_prio(int prio_level)
 {
+#if 0
     struct sched_param priority;
 
     if(prio_level > 0)
@@ -501,6 +505,7 @@ fluid_thread_self_set_prio(int prio_level)
 #endif
         FLUID_LOG(FLUID_WARN, "Failed to set thread to high priority");
     }
+#endif
 }
 
 #ifdef FPE_CHECK
@@ -1041,7 +1046,7 @@ new_fluid_thread(const char *name, fluid_thread_func_t func, void *data, int pri
     fluid_thread_info_t *info = NULL;
     GError *err = NULL;
 
-    g_return_val_if_fail(func != NULL, NULL);
+    fluid_return_val_if_fail(func != NULL, NULL);
 
 #if OLD_GLIB_THREAD_API
 

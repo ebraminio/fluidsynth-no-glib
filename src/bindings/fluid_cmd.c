@@ -433,6 +433,8 @@ static const fluid_cmd_t fluid_commands[] =
 int
 fluid_command(fluid_cmd_handler_t *handler, const char *cmd, fluid_ostream_t out)
 {
+    return 0;
+#if 0
     int result, num_tokens = 0;
     char **tokens = NULL;
 
@@ -451,6 +453,7 @@ fluid_command(fluid_cmd_handler_t *handler, const char *cmd, fluid_ostream_t out
     fluid_strfreev(tokens);
 
     return result;
+#endif
 }
 
 /**

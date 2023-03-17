@@ -478,7 +478,6 @@ fluid_rvoice_buffers_mix(fluid_rvoice_buffers_t *buffers,
         else
         {
             // here goes the vectorizable loop
-            #pragma omp simd aligned(dsp_buf,buf:FLUID_DEFAULT_ALIGNMENT)
             for(dsp_i = 0; dsp_i < FLUID_BUFSIZE; dsp_i++)
             {
                 // We cannot simply increment current_amp by amp_incr during every iteration, as this would create a dependency and prevent vectorization.
@@ -489,7 +488,6 @@ fluid_rvoice_buffers_mix(fluid_rvoice_buffers_t *buffers,
             if(target_amp > 0)
             {
                 /* Note, that this loop could be unrolled by FLUID_BUFSIZE elements */
-                #pragma omp simd aligned(dsp_buf,buf:FLUID_DEFAULT_ALIGNMENT)
                 for(dsp_i = FLUID_BUFSIZE; dsp_i < sample_count; dsp_i++)
                 {
                     // Index by blocks (not by samples) to let the compiler know that we always start accessing
@@ -1413,8 +1411,6 @@ fluid_mixer_buffers_mix(fluid_mixer_buffers_t *dst, fluid_mixer_buffers_t *src, 
 
     for(i = 0; i < minbuf; i++)
     {
-        #pragma omp simd aligned(base_dst,base_src:FLUID_DEFAULT_ALIGNMENT)
-
         for(j = 0; j < scount; j++)
         {
             int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
@@ -1427,8 +1423,6 @@ fluid_mixer_buffers_mix(fluid_mixer_buffers_t *dst, fluid_mixer_buffers_t *src, 
 
     for(i = 0; i < minbuf; i++)
     {
-        #pragma omp simd aligned(base_dst,base_src:FLUID_DEFAULT_ALIGNMENT)
-
         for(j = 0; j < scount; j++)
         {
             int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
@@ -1448,8 +1442,6 @@ fluid_mixer_buffers_mix(fluid_mixer_buffers_t *dst, fluid_mixer_buffers_t *src, 
 
     for(i = 0; i < minbuf; i++)
     {
-        #pragma omp simd aligned(base_dst,base_src:FLUID_DEFAULT_ALIGNMENT)
-
         for(j = 0; j < scount; j++)
         {
             int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
@@ -1462,8 +1454,6 @@ fluid_mixer_buffers_mix(fluid_mixer_buffers_t *dst, fluid_mixer_buffers_t *src, 
 
     for(i = 0; i < minbuf; i++)
     {
-        #pragma omp simd aligned(base_dst,base_src:FLUID_DEFAULT_ALIGNMENT)
-
         for(j = 0; j < scount; j++)
         {
             int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;

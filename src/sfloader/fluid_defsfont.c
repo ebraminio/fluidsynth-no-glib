@@ -395,8 +395,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
         }
     }
 
-    #pragma omp parallel
-    #pragma omp single
     for(list = defsfont->sample; list; list = fluid_list_next(list))
     {
         sample = fluid_list_get(list);
@@ -405,11 +403,9 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
         {
             /* SF3 samples get loaded individually, as most (or all) of them are in Ogg Vorbis format
              * anyway */
-            #pragma omp task firstprivate(sample,sfdata,defsfont) shared(sample_parsing_result, invalid_loops_were_sanitized) default(none)
             {
                 if(fluid_defsfont_load_sampledata(defsfont, sfdata, sample) == FLUID_FAILED)
                 {
-                    #pragma omp critical
                     {
                         FLUID_LOG(FLUID_ERR, "Failed to load sample '%s'", sample->name);
                         sample_parsing_result = FLUID_FAILED;
@@ -431,7 +427,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
         }
         else
         {
-            #pragma omp task firstprivate(sample, defsfont) shared(invalid_loops_were_sanitized) default(none)
             {
                 int modified;
                 /* Data pointers of SF2 samples point to large sample data block loaded above */

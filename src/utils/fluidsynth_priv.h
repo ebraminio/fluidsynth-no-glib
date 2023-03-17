@@ -31,7 +31,7 @@
 
 #include "config.h"
 
-#include <glib.h>
+#include "glib_shim.h"
 
 #if HAVE_STDLIB_H
 #include <stdlib.h> // malloc, free

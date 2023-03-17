@@ -168,7 +168,7 @@ typedef gintptr  intptr_t;
 #include <gmodule.h>
 #endif
 
-#include <glib/gstdio.h>
+#include "glib_shim.h"
 
 /**
  * Macro used for safely accessing a message from a GError and using a default
@@ -176,7 +176,7 @@ typedef gintptr  intptr_t;
  * @param err Pointer to a GError to access the message field of.
  * @return Message string
  */
-#define fluid_gerror_message(err)  ((err) ? err->message : "No error details")
+#define fluid_gerror_message(err)  ("No error details")
 
 #if defined(_WIN32) || defined(__CYGWIN__)
 char* fluid_get_windows_error(void);
@@ -329,13 +329,13 @@ delete_fluid_cond(fluid_cond_t *cond)
 }
 
 /* Thread private data */
-
+#if 0
 typedef GPrivate fluid_private_t;
 #define fluid_private_init(_priv)                  memset (&_priv, 0, sizeof (_priv))
 #define fluid_private_free(_priv)
 #define fluid_private_get(_priv)                   g_private_get(&(_priv))
 #define fluid_private_set(_priv, _data)            g_private_set(&(_priv), _data)
-
+#endif
 #else
 
 /* glib prior to 2.32 */
