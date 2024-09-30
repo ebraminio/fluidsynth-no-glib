@@ -126,8 +126,8 @@ endif
 # external dependencies
 
 m_dep = cc.find_library('m', required: false)
-glib_dep = dependency('glib-2.0', static: get_option('try-static-deps'))
-gthread_dep = dependency('gthread-2.0', static: get_option('try-static-deps'))
+glib_dep = [] #dependency('glib-2.0', static: get_option('try-static-deps'))
+gthread_dep = [] #dependency('gthread-2.0', static: get_option('try-static-deps'))
 if cc.get_argument_syntax() != 'msvc'
   openmp_dep = dependency('openmp', required: get_option('openmp'), version: '>=4.0')
 else

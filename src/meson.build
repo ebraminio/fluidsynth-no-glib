@@ -48,6 +48,7 @@ fluidsynth_sources = files(
   'utils/fluid_ringbuffer.c',
   'utils/fluid_settings.c',
   'utils/fluid_sys.c',
+  'glib_shim.c',
 )
 
 make_tables_sources = files(
