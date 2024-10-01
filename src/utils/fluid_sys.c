@@ -1740,32 +1740,33 @@ FILE* fluid_file_open(const char* path, const char** errMsg)
     static const char ErrExist[] = "File does not exist.";
     static const char ErrRegular[] = "File is not regular, refusing to open it.";
     static const char ErrNull[] = "File does not exists or insufficient permissions to open it.";
-    
-    FILE* handle = NULL;
-    
-    if(!fluid_file_test(path, FLUID_FILE_TEST_EXISTS))
-    {
-        if(errMsg != NULL)
-        {
-            *errMsg = ErrExist;
-        }
-    }
-    else if(!fluid_file_test(path, FLUID_FILE_TEST_IS_REGULAR))
-    {
-        if(errMsg != NULL)
-        {
-            *errMsg = ErrRegular;
-        }
-    }
-    else if((handle = FLUID_FOPEN(path, "rb")) == NULL)
-    {
-        if(errMsg != NULL)
-        {
-            *errMsg = ErrNull;
-        }
-    }
-    
-    return handle;
+
+    return fopen(path, "rb");
+//    FILE* handle = NULL;
+//
+//    if(!fluid_file_test(path, FLUID_FILE_TEST_EXISTS))
+//    {
+//        if(errMsg != NULL)
+//        {
+//            *errMsg = ErrExist;
+//        }
+//    }
+//    else if(!fluid_file_test(path, FLUID_FILE_TEST_IS_REGULAR))
+//    {
+//        if(errMsg != NULL)
+//        {
+//            *errMsg = ErrRegular;
+//        }
+//    }
+//    else if((handle = FLUID_FOPEN(path, "rb")) == NULL)
+//    {
+//        if(errMsg != NULL)
+//        {
+//            *errMsg = ErrNull;
+//        }
+//    }
+//
+//    return handle;
 }
 
 fluid_long_long_t fluid_file_tell(FILE* f)
